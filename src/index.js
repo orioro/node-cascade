@@ -58,6 +58,13 @@ export const filterMatching = (options, ...args) => {
   }, [])
 }
 
+export const reduceMatching = (options, reducer, start, ...injectedArgs) => {
+  return options.reduce((acc, option) => {
+    return testCriteria(option.criteria, acc) ?
+      reducer(acc, option.value, ...injectedArgs) : acc
+  }, start)
+}
+
 export const executeMatching = (options, ...args) => {
   const matchingFn = findMatching(options, ...args)
 
@@ -69,10 +76,8 @@ export const executeMatching = (options, ...args) => {
 }
 
 export const executeMatchingReduce = (options, start, ...injectedArgs) => {
-  return options.reduce((acc, option) => {
-    return testCriteria(option.criteria, start, ...injectedArgs) ?
-      option.value(acc, ...injectedArgs) :
-      acc
+  return reduceMatching(options, (acc, matchingFn) => {
+    return matchingFn(acc, ...injectedArgs)
   }, start)
 }
 
