@@ -66,25 +66,4 @@ describe('testCriteria(criteria, ...args)', () => {
     expect(testCriteria('some-value', 'some-value')).toEqual(true)
     expect(testCriteria('some-value', 'other-value')).toEqual(false)
   })
-
-  test('array criteria', () => {
-    const criteria = [
-      'arg-1',
-      {
-        type: 'object'
-      }
-    ]
-    expect(testCriteria(criteria, 'arg-1', {
-      name: 'arg-2',
-      type: 'object',
-    }))
-    .toEqual(true)
-
-    expect(testCriteria(criteria, 'arg-1')).toEqual(false)
-    expect(testCriteria(criteria, undefined, {
-      type: 'object',
-      name: 'arg-3'
-    }))
-    .toEqual(false)
-  })
 })

@@ -1,4 +1,18 @@
-import mingo from 'mingo'
+import {
+  expression,
+  ALL_EXPRESSIONS
+} from '@orioro/data-expressions'
+
+const evaluateMatchPaths = (criteria, data) => {
+  return expression(
+    ALL_EXPRESSIONS,
+    ['$matchPaths',
+      criteria,
+      ['$value', null]
+    ],
+    data
+  )
+}
 
 const switchType = (value, fns) => {
   if (Array.isArray(value)) {
@@ -25,17 +39,14 @@ const switchType = (value, fns) => {
 
 export const testCriteria = (criteria, ...args) => {
   return switchType(criteria, {
-    array: () => {
-      return criteria.every((crit, index) => testCriteria(crit, args[index]))
+    function: () => {
+      return criteria(...args)
     },
     regexp: () => {
       return typeof args[0] === 'string' && criteria.test(args[0])
     },
     object: () => {
-      return (new mingo.Query(criteria)).test(args[0])
-    },
-    function: () => {
-      return criteria(...args)
+      return evaluateMatchPaths(criteria, args[0])
     },
     boolean: () => {
       return criteria
