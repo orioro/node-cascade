@@ -1,5 +1,5 @@
-type Criteria = (...args:any[]) => boolean | any
-type Option = [Criteria, any] | [any]
+export type Criteria = (...args:any[]) => boolean | any
+export type Option = [Criteria, any] | [any]
 
 export const test = (criteria, ...args) => {
   return (criteria instanceof RegExp)
