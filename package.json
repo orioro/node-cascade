@@ -1,6 +1,6 @@
 {
   "name": "@orioro/cascade",
-  "version": "3.0.0-beta",
+  "version": "3.0.0-beta.1",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
