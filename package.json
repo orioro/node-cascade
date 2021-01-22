@@ -1,16 +1,15 @@
 {
   "name": "@orioro/cascade",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "scripts": {
-    "test": "jest",
-    "test-watch": "jest --watch",
+    "test": "jest --collectCoverage",
+    "develop": "jest --watch",
     "build": "rm -rf dist && rollup --config ./rollup/build.config.js && npm run tsc-declaration",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "update-dependencies": "npx npm-check-updates -u",
-    "develop": "rm -rf dist && rollup --config ./rollup/build.config.js --watch",
     "tsc-declaration": "tsc --declaration --emitDeclarationOnly --declarationDir dist"
   },
   "author": "",
