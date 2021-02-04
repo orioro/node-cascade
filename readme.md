@@ -1,4 +1,3 @@
---------------------------------------------------------------------------------
 # cascade
 
 Small set of utility functions that help implement conditional selection/execution
