@@ -11,6 +11,7 @@ It's like a `switch` statement that the `cases` are provided through an array of
 alternatives.
 
 ## Executing corresponding function
+
 ```js
 import { [test](#testcriteria-args), [cascadeExec](#cascadeexectest-alternatives-args) } from '@orioro/cascade'
 
