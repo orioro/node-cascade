@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/orioro/node-cascade/compare/v2.0.0...v3.0.0) (2021-02-04)
+
+
+### Features
+
+* **semantic-release-integration:** 3.0.0 ([20cb22c](https://github.com/orioro/node-cascade/commit/20cb22cf0124acbbfb0d0f4b1e5da93209355d2d))
+
+
+### BREAKING CHANGES
+
+* **semantic-release-integration:** 3.0.0
+
 # [2.0.0](https://github.com/orioro/node-cascade/compare/v1.0.0...v2.0.0) (2021-02-04)
 
 
