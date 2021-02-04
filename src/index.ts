@@ -1,18 +1,50 @@
+/**
+ * Function that returns boolean
+ * 
+ * @typedef Criteria
+ */
 export type Criteria = (
   (...args:any[]) => boolean |
   any
 )
+
+/**
+ * Tuple consisting of either:
+ * - `[Criteria, value]`
+ * - `[value]`
+ * @typedef {[Criteria, any] | [any]} Alternative
+ */
 export type Alternative = [Criteria, any] | [any]
+
+/**
+ * Tuple consisting of either:
+ * - `[Criteria, Function]`
+ * - `[Function]`
+ * @typedef {[Criteria, any] | [any]} Alternative
+ */
 export type ExecutableAlternative = (
   [Criteria, (...args:any[]) => any] |
   [(...args:any[]) => any]
 )
 
+/**
+ * Function that interprets a given criteria.
+ * Takes as arguments:
+ * - {Criteria} criteria
+ * - ...args Remaining arguments
+ * 
+ * @typedef TestFunction
+ */
 export type TestFunction = (
   criteria:Criteria,
   ...args:any
 ) => boolean
 
+/**
+ * @function test
+ * @param {Criteria} criteria
+ * @param {...args[]} args
+ */
 export const test:TestFunction = (
   criteria,
   ...args
@@ -44,6 +76,13 @@ const _alternativeValue = (
     : alternative[1]
 )
 
+/**
+ * @function cascadeFind
+ * @param {TestFunction} test
+ * @param {Alternative[]} alternatives
+ * @param {...args[]} args
+ * @returns {*}
+ */
 export const cascadeFind = (
   test:TestFunction,
   alternatives:Alternative[],
@@ -55,12 +94,26 @@ export const cascadeFind = (
   return alternative ? _alternativeValue(alternative) : undefined
 }
 
+/**
+ * @function cascadeExec
+ * @param {TestFunction} test
+ * @param {ExecutableAlternative[]} alternatives
+ * @param {...args[]} args
+ * @returns {*}
+ */
 export const cascadeExec = (
   test:TestFunction,
   alternatives:ExecutableAlternative[],
   ...args:any[]
 ):any => cascadeFind(test, alternatives, ...args)(...args)
 
+/**
+ * @function cascadeFind
+ * @param {TestFunction} test
+ * @param {Alternative[]} alternatives
+ * @param {...args[]} args
+ * @returns {*[]}
+ */
 export const cascadeFilter = (
   test:TestFunction,
   alternatives:Alternative[],
