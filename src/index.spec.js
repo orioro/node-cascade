@@ -1,23 +1,21 @@
-import {
-  cascadeFind,
-  cascadeExec,
-  test as testFn
-} from '../src'
+import { cascadeFind, cascadeExec, test as testFn } from '../src'
 
 describe('cascadeFind(test, alternatives, ...args)', () => {
-	test('string', () => {
+  test('string', () => {
     const alternatives = [
       ['key1', 'value1'],
       ['key2', 'value2'],
       ['key3', 'value3'],
       ['key4', 'value4'],
-      ['default value']
+      ['default value'],
     ]
 
     expect(cascadeFind(testFn, alternatives, 'key3')).toEqual('value3')
     expect(cascadeFind(testFn, alternatives, 'key4')).toEqual('value4')
-    expect(cascadeFind(testFn, alternatives, 'key9999')).toEqual('default value')
-	})
+    expect(cascadeFind(testFn, alternatives, 'key9999')).toEqual(
+      'default value'
+    )
+  })
 
   test('number', () => {
     const alternatives = [
@@ -25,7 +23,7 @@ describe('cascadeFind(test, alternatives, ...args)', () => {
       [2, 'value2'],
       [4, 'value3'],
       [5, 'value4'],
-      ['default value']
+      ['default value'],
     ]
     expect(cascadeFind(testFn, alternatives, 1)).toEqual('value1')
     expect(cascadeFind(testFn, alternatives, 3)).toEqual('default value')
@@ -38,7 +36,7 @@ describe('cascadeFind(test, alternatives, ...args)', () => {
       [/^abcde/, 'value2'],
       [/^abcd/, 'value3'],
       [/^abc/, 'value4'],
-      ['default value']
+      ['default value'],
     ]
     expect(cascadeFind(testFn, alternatives, 'abcde')).toEqual('value1')
     expect(cascadeFind(testFn, alternatives, 'abcdef')).toEqual('value2')
@@ -48,9 +46,9 @@ describe('cascadeFind(test, alternatives, ...args)', () => {
 
   test('function', () => {
     const alternatives = [
-      [value => value < 20, '<20'],
-      [value => value >= 20 && value < 50, '>=20 && <50'],
-      [value => value > 50, '>50']
+      [(value) => value < 20, '<20'],
+      [(value) => value >= 20 && value < 50, '>=20 && <50'],
+      [(value) => value > 50, '>50'],
     ]
 
     expect(cascadeFind(testFn, alternatives, 19)).toEqual('<20')
@@ -59,55 +57,58 @@ describe('cascadeFind(test, alternatives, ...args)', () => {
   })
 })
 
-describe('cascadeExec(test, alternatives, ...args)', () => {
-  test('', () => {
-    const alternatives = [
-      [
-        item => item.type === 'book',
-        item => `${item.title} - por ${item.authors.join(' e ')}`
-      ],
-      [
-        item => item.type === 'plant',
-        item => `${item.name} (${item.scientificName})`
-      ],
-      [
-        item => item.type === 'person',
-        item => `${item.firstName} ${item.middleName} ${item.lastName}, ${item.profession}`
-      ],
-      [
-        item => `Unknown: ${(item.name || item.title)}`
-      ]
-    ]
+test('cascadeExec(test, alternatives, ...args)', () => {
+  const alternatives = [
+    [
+      (item) => item.type === 'book',
+      (item) => `${item.title} - por ${item.authors.join(' e ')}`,
+    ],
+    [
+      (item) => item.type === 'plant',
+      (item) => `${item.name} (${item.scientificName})`,
+    ],
+    [
+      (item) => item.type === 'person',
+      (item) =>
+        `${item.firstName} ${item.middleName} ${item.lastName}, ${item.profession}`,
+    ],
+    [(item) => `Unknown: ${item.name || item.title}`],
+  ]
 
-    const summarize = item => cascadeExec(testFn, alternatives, item)
+  const summarize = (item) => cascadeExec(testFn, alternatives, item)
 
-    expect(summarize({
+  expect(
+    summarize({
       type: 'book',
       title: 'Psicogênese da Língua Escrita',
-      authors: ['Emília Ferreiro', 'Ana Teberosky']
-    }))
-    .toEqual('Psicogênese da Língua Escrita - por Emília Ferreiro e Ana Teberosky')
+      authors: ['Emília Ferreiro', 'Ana Teberosky'],
+    })
+  ).toEqual(
+    'Psicogênese da Língua Escrita - por Emília Ferreiro e Ana Teberosky'
+  )
 
-    expect(summarize({
+  expect(
+    summarize({
       type: 'plant',
       name: 'Samambaiaçu',
-      scientificName: 'Dicksonia sellowiana'
-    }))
-    .toEqual('Samambaiaçu (Dicksonia sellowiana)')
+      scientificName: 'Dicksonia sellowiana',
+    })
+  ).toEqual('Samambaiaçu (Dicksonia sellowiana)')
 
-    expect(summarize({
+  expect(
+    summarize({
       type: 'person',
       firstName: 'João',
       lastName: 'Nunes',
       middleName: 'Silveira',
-      profession: 'Desenvolvedor de software'
-    }))
-    .toEqual('João Silveira Nunes, Desenvolvedor de software')
+      profession: 'Desenvolvedor de software',
+    })
+  ).toEqual('João Silveira Nunes, Desenvolvedor de software')
 
-    expect(summarize({
+  expect(
+    summarize({
       type: 'something_else',
-      title: 'Something else'
-    }))
-    .toEqual('Unknown: Something else')
-  })
+      title: 'Something else',
+    })
+  ).toEqual('Unknown: Something else')
 })
